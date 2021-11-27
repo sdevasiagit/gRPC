@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.17'
+    id 'idea'
+}
+
+group 'com.sd.grpc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.17.2"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.42.1'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.42.1'
+    implementation 'io.grpc:grpc-protobuf:1.42.1'
+    implementation 'io.grpc:grpc-stub:1.42.1'
+    implementation 'io.grpc:grpc-services:1.42.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+
+    implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.4.0'
+
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
